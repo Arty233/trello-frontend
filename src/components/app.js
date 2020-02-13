@@ -18,15 +18,33 @@ export default class App extends Component {
   }
 
   checkLogingStatus() {
-    axios.get("http://localhost:3001/logged_in",
-      { withCredentials: true }
-    )
-    .then(res => {
-      console.log("logged in?", res)
-    })
-    .catch(err => {
-      console.log("check login error", err);
-    });
+    {
+      axios
+        .get("http://localhost:3001/logged_in", { withCredentials: true })
+        .then(response => {
+          console.log(response);
+          if (
+            response.data.logged_in &&
+            this.state.loggedInStatus === "NOT_LOGGED_IN"
+          ) {
+            this.setState({
+              loggedInStatus: "LOGGED_IN",
+              user: response.data.user
+            });
+          } else if (
+            !response.data.logged_in &&
+            (this.state.loggedInStatus === "LOGGED_IN")
+          ) {
+            this.setState({
+              loggedInStatus: "NOT_LOGGED_IN",
+              user: {}
+            });
+          }
+        })
+        .catch(error => {
+          console.log("check login error", error);
+        });
+    }
   }
 
   componentDidMount() {
@@ -57,9 +75,15 @@ export default class App extends Component {
               render={props => (
                 <Board {...props} loggedInStatus={this.state.loggedInStatus} />
               )} />
+              
           </Switch>
         </BrowserRouter>
       </div>
     );
   }
 }
+
+
+//TODO:
+//fix login bugs
+//make logout

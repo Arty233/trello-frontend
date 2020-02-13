@@ -11,7 +11,7 @@ const DefinePlugin = require('webpack/lib/DefinePlugin');
 const HotModuleReplacementPlugin = require('webpack/lib/HotModuleReplacementPlugin');
 
 module.exports = webpackMerge(webpackCommon, {
-
+  
   devtool: 'inline-source-map',
   mode: 'development',
   output: {
